@@ -37,8 +37,8 @@ router.post('/', function(req, res) {
  */
 // localhost:3000/stores/1
 router.put('/:id', function(req, res) {
-    query = 'UPDATE store SET last_update= ? WHERE store_id = ?';
-    params = [req.body.last_update,req.params.id]
+    query = 'UPDATE store SET last_update= ?,address_id=? WHERE store_id = ?';
+    params = [req.body.last_update,req.body.address_id,req.params.id]
     sql.query(query, params, function(err, rows, fields) {
         if (err) throw_err(err, res);
         res.json({ 'success': 1 });
