@@ -27,7 +27,7 @@ router.get('/:id', function(req, res) {
 	var db = req.sql;	
 	sql.query('SELECT * FROM payment WHERE payment_id=' + req.params.id, function(err,rows,fields) {
 	if(err) throw_err(err,res);
-	res.json({'store': rows});
+	res.json({'payment': rows});
 	});
 
 });
