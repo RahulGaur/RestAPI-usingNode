@@ -113,57 +113,114 @@ pagination = function(req,res,fields,table_name){
       ' OFFSET ' + req.query.offset
   ).then(function(query_res) {
 
-  var next_num = parseInt(req.query.offset)+parseInt(req.query.limit);
-  var prev_num = parseInt(req.query.offset)-parseInt(req.query.limit);
-  var lastpage_num = parseInt(last_num)-parseInt(req.query.limit);
+    var next_num = parseInt(req.query.offset)+parseInt(req.query.limit);
+    var prev_num = parseInt(req.query.offset)-parseInt(req.query.limit);
+    var lastpage_num = parseInt(last_num)-parseInt(req.query.limit);
 
-  if(next_num>last_num) {
-    var next_link = {rel:"next", href:''}
-  } else {
-    var next_link = {rel:"next", href:req.protocol + '//:' + req.hostname +
-      ':' + req.app.locals.settings.port+req.baseUrl 
-      + '?offset=' + next_num
-      + '&limit=' + req.query.limit}
-  }
+    if(next_num>last_num) {
+      var next_link = {rel:"next", href:''}
+    } else {
+      var next_link = {rel:"next", href:req.protocol + '//:' + req.hostname +
+        ':' + req.app.locals.settings.port+req.baseUrl 
+        + '?offset=' + next_num
+        + '&limit=' + req.query.limit}
+    }
 
-  if(prev_num<0) {
-    var prev_link = {rel:"prev", href:''}
-  } else {
-    var prev_link = {rel:"prev", href:req.protocol + '//:' + req.hostname +
-      ':' + req.app.locals.settings.port+req.baseUrl 
-      + '?offset=' + prev_num
-      + '&limit=' + req.query.limit}
-  }
+    if(prev_num<0) {
+      var prev_link = {rel:"prev", href:''}
+    } else {
+      var prev_link = {rel:"prev", href:req.protocol + '//:' + req.hostname +
+        ':' + req.app.locals.settings.port+req.baseUrl 
+        + '?offset=' + prev_num
+        + '&limit=' + req.query.limit}
+    }
 
-  var links = [
-      next_link,
+    var links = [
+        next_link,
 
-      {rel:"self", href:req.protocol+'//:'+req.hostname+
-      ':'+req.app.locals.settings.port+req.originalUrl},
+        {rel:"self", href:req.protocol+'//:'+req.hostname+
+        ':'+req.app.locals.settings.port+req.originalUrl},
 
-      prev_link,
+        prev_link,
 
-      {rel:"last", href:req.protocol + '//:' + req.hostname +
-      ':' + req.app.locals.settings.port+req.baseUrl 
-      + '?offset=' + lastpage_num
-      + '&limit=' + req.query.limit},
+        {rel:"last", href:req.protocol + '//:' + req.hostname +
+        ':' + req.app.locals.settings.port+req.baseUrl 
+        + '?offset=' + lastpage_num
+        + '&limit=' + req.query.limit},
 
-      {rel:"first", href:req.protocol + '//:' + req.hostname +
-      ':' + req.app.locals.settings.port+req.baseUrl 
-      + '?offset=' + 0
-      + '&limit=' + req.query.limit}
-  ]
+        {rel:"first", href:req.protocol + '//:' + req.hostname +
+        ':' + req.app.locals.settings.port+req.baseUrl 
+        + '?offset=' + 0
+        + '&limit=' + req.query.limit}
+    ]
 
-  var pagination_res = {data:query_res, links:links};
+    query_res = body_parser(query_res);
 
-  if(req.query.offset>last_num){
-    res.send('out of bound');
-  }else{
-    res.send(pagination_res);
-  }
+    var pagination_res = {data:query_res, links:links};
+
+    if(req.query.offset>last_num){
+      res.send('out of bound');
+    }else{
+      res.send(pagination_res);
+    }
 
   });
 };
+
+var is = require('type-is');
+ 
+function body_parser(obj, res, next) {
+
+//If the oject is valid, namely a JSON object that is not empty
+  if (!is(obj,['json'])) {
+      res.statusCode = 415;
+      res.end();
+      return next();
+  }
+ 
+
+//For loop to get relation, link, expand info.
+
+for (var property in object) {
+    if (object.hasOwnProperty(property)) {
+        // do stuff
+     switch (is(req, ['+/_id', 'json', 'multipart'])) {
+      case 'identifier':
+        // parse identifier
+        getRelation();
+        getLink();
+        getExpand();
+        break
+      default:
+        // 415 error code 
+        res.statusCode = 415
+        res.end()
+        return
+    }
+}
+
+  // var istext = is(req, ['+/_id']);
+  // res.end('you ' + (istext ? 'sent' : 'did not send') + ' me text');
+  
+  // while(next_token != null ){
+
+  //   switch (is(req, ['+/_id', 'json', 'multipart'])) {
+  //     case 'identifier':
+  //       // parse identifier
+  //       getRelation();
+  //       getLink();
+  //       getExpand();
+  //       break
+  //     default:
+  //       // 415 error code 
+  //       res.statusCode = 415
+  //       res.end()
+  //       return
+  //   }
+  // }
+
+  //Warp information into a JSON object
+}
 
 console.log('running!!!');
 
