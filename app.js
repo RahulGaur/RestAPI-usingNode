@@ -152,11 +152,11 @@ pagination = function(req,res,fields,table_name){
         ':' + req.app.locals.settings.port+req.baseUrl
         + '?offset=' + 0
         + '&limit=' + req.query.limit}
-    ]
+    ];
 
-    query_res = body_parser(query_res);
 
-    var pagination_res = {data:query_res, links:links};
+
+    var pagination_res = {data:body_parser(query_res), links:links};
 
     if(req.query.offset>last_num){
       res.send('out of bound');
@@ -167,61 +167,43 @@ pagination = function(req,res,fields,table_name){
   });
 };
 
-var is = require('type-is');
+body_parser = function(query_res) {
+  var exp_data = [];
+  console.log("in parser");
 
-function body_parser(obj, res, next) {
+  for (var i = 0; i < query_res.length; i++) {
+    var object = query_res[i];
+    var exp_obj = {};
+    console.log("in for");
+    for (var property in object) {
+      if (object.hasOwnProperty(property)) {
+        var tokens = property.split("_");
+        if (tokens.indexOf("id") > -1) {
 
-//If the oject is valid, namely a JSON object that is not empty
-  if (!is(obj,['json'])) {
-      res.statusCode = 415;
-      res.end();
-      return next();
-  }
+        }
 
+        exp_obj[property] = object[property];
 
-//For loop to get relation, link, expand info.
-for (var i = 0; i < query_res.lengthl i++) {
-	for (var property in query_res[i]) {
-    if (object.hasOwnProperty(property)) {
-     switch (is(req, ['+/_id', 'json', 'multipart'])) {
-      case 'identifier':
-        // parse identifier
-        getRelation();
-        getLink();
-        getExpand();
-        break
-      default:
-        // 415 error code
-        res.statusCode = 415
-        res.end()
-        return
+       // switch (is(req, ['+/_id', 'json', 'multipart'])) {
+       //  case 'identifier':
+       //    // parse identifier
+       //    getRelation();
+       //    getLink();
+       //    getExpand();
+       //    break
+       //  default:
+       //    // 415 error code
+       //    res.statusCode = 415
+       //    res.end()
+       //    return
+      }
     }
+    exp_data.push(exp_obj);
+
+  }
+  return exp_data;
 }
-}
 
-
-  // var istext = is(req, ['+/_id']);
-  // res.end('you ' + (istext ? 'sent' : 'did not send') + ' me text');
-
-  // while(next_token != null ){
-
-  //   switch (is(req, ['+/_id', 'json', 'multipart'])) {
-  //     case 'identifier':
-  //       // parse identifier
-  //       getRelation();
-  //       getLink();
-  //       getExpand();
-  //       break
-  //     default:
-  //       // 415 error code
-  //       res.statusCode = 415
-  //       res.end()
-  //       return
-  //   }
-  // }
-
-  //Warp information into a JSON object
-}
 
 console.log('running!!!');
 
