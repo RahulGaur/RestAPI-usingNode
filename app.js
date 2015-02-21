@@ -73,17 +73,17 @@ var connection = mysql.createConnection({
   database: 'sakila'
 
 });
- 
+
 connection.connect(function(err) {
   if (err) {
     console.error('error connecting: ' + err.stack);
     return;
   }
- 
+
   console.log('connected as id ' + connection.threadId);
 });
 
-//and pass it into the node-mysql-wrap constructor 
+//and pass it into the node-mysql-wrap constructor
 var createMySQLWrap = require('mysql-wrap');
 sql = createMySQLWrap(connection);
 
@@ -121,7 +121,7 @@ pagination = function(req,res,fields,table_name){
       var next_link = {rel:"next", href:''}
     } else {
       var next_link = {rel:"next", href:req.protocol + '//:' + req.hostname +
-        ':' + req.app.locals.settings.port+req.baseUrl 
+        ':' + req.app.locals.settings.port+req.baseUrl
         + '?offset=' + next_num
         + '&limit=' + req.query.limit}
     }
@@ -130,7 +130,7 @@ pagination = function(req,res,fields,table_name){
       var prev_link = {rel:"prev", href:''}
     } else {
       var prev_link = {rel:"prev", href:req.protocol + '//:' + req.hostname +
-        ':' + req.app.locals.settings.port+req.baseUrl 
+        ':' + req.app.locals.settings.port+req.baseUrl
         + '?offset=' + prev_num
         + '&limit=' + req.query.limit}
     }
@@ -144,12 +144,12 @@ pagination = function(req,res,fields,table_name){
         prev_link,
 
         {rel:"last", href:req.protocol + '//:' + req.hostname +
-        ':' + req.app.locals.settings.port+req.baseUrl 
+        ':' + req.app.locals.settings.port+req.baseUrl
         + '?offset=' + lastpage_num
         + '&limit=' + req.query.limit},
 
         {rel:"first", href:req.protocol + '//:' + req.hostname +
-        ':' + req.app.locals.settings.port+req.baseUrl 
+        ':' + req.app.locals.settings.port+req.baseUrl
         + '?offset=' + 0
         + '&limit=' + req.query.limit}
     ]
@@ -168,7 +168,7 @@ pagination = function(req,res,fields,table_name){
 };
 
 var is = require('type-is');
- 
+
 function body_parser(obj, res, next) {
 
 //If the oject is valid, namely a JSON object that is not empty
@@ -177,13 +177,12 @@ function body_parser(obj, res, next) {
       res.end();
       return next();
   }
- 
+
 
 //For loop to get relation, link, expand info.
-
-for (var property in object) {
+for (var i = 0; i < query_res.lengthl i++) {
+	for (var property in query_res[i]) {
     if (object.hasOwnProperty(property)) {
-        // do stuff
      switch (is(req, ['+/_id', 'json', 'multipart'])) {
       case 'identifier':
         // parse identifier
@@ -192,16 +191,18 @@ for (var property in object) {
         getExpand();
         break
       default:
-        // 415 error code 
+        // 415 error code
         res.statusCode = 415
         res.end()
         return
     }
 }
+}
+
 
   // var istext = is(req, ['+/_id']);
   // res.end('you ' + (istext ? 'sent' : 'did not send') + ' me text');
-  
+
   // while(next_token != null ){
 
   //   switch (is(req, ['+/_id', 'json', 'multipart'])) {
@@ -212,7 +213,7 @@ for (var property in object) {
   //       getExpand();
   //       break
   //     default:
-  //       // 415 error code 
+  //       // 415 error code
   //       res.statusCode = 415
   //       res.end()
   //       return
