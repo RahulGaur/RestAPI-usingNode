@@ -165,7 +165,7 @@ pagination = function(req,res,fields,table_name){
   });
 };
 
-body_parser = function(query_res, table_name) {
+body_parser = function(query_res, table_name, page_req) {
   var res = [];
 
   //For loop to get relation, link, expand info.
@@ -181,15 +181,13 @@ body_parser = function(query_res, table_name) {
         if (property_token.indexOf("id") > -1){
 
           nested_obj["data"] = {"id": origin_obj[property]};
-          if (property_token[0] == "customer" || property_token[0] == "manager") {
-            nested_obj["data"]["name"] = getName(); //!!!
-          }
-          nested_obj["link"] = {"rel": getRel(table_name, property, property_token),
-                              "href": getHref(origin_obj, property)};
+          // if (property_token[0] == "customer" || property_token[0] == "manager") {
+          //   nested_obj["data"]["name"] = getName(); //!!!
+          // }
+          nested_obj["link"] = {"rel": getRel(table_name, property_token[0])
+                              , "href": getHref(origin_obj, property, page_req)};
           exp_obj[property_token[0]] = nested_obj;
-        }
-
-        if (property_token.indexOf("id") == -1){
+        } else {
           exp_obj[property] = origin_obj[property];
         }
 
@@ -201,11 +199,11 @@ body_parser = function(query_res, table_name) {
   return res;
 }
 
-getRel = function(table_name, property, property_token) {
-  if (table_name = property)
+getRel = function(table_name, first_token) {
+  if (table_name == first_token)
     return 'self'
   else
-    return table_name + property_token[1];
+    return table_name + "_" + first_token;
 }
 
 getHref = function(origin_obj, property, page_req) {
