@@ -73,17 +73,17 @@ var connection = mysql.createConnection({
   database: 'sakila'
 
 });
- 
+
 connection.connect(function(err) {
   if (err) {
     console.error('error connecting: ' + err.stack);
     return;
   }
- 
+
   console.log('connected as id ' + connection.threadId);
 });
 
-//and pass it into the node-mysql-wrap constructor 
+//and pass it into the node-mysql-wrap constructor
 var createMySQLWrap = require('mysql-wrap');
 sql = createMySQLWrap(connection);
 
@@ -121,7 +121,7 @@ pagination = function(req,res,fields,table_name){
     var next_link = {rel:"next", href:''}
   } else {
     var next_link = {rel:"next", href:req.protocol + '//:' + req.hostname +
-      ':' + req.app.locals.settings.port+req.baseUrl 
+      ':' + req.app.locals.settings.port+req.baseUrl
       + '?offset=' + next_num
       + '&limit=' + req.query.limit}
   }
@@ -130,7 +130,7 @@ pagination = function(req,res,fields,table_name){
     var prev_link = {rel:"prev", href:''}
   } else {
     var prev_link = {rel:"prev", href:req.protocol + '//:' + req.hostname +
-      ':' + req.app.locals.settings.port+req.baseUrl 
+      ':' + req.app.locals.settings.port+req.baseUrl
       + '?offset=' + prev_num
       + '&limit=' + req.query.limit}
   }
@@ -144,12 +144,12 @@ pagination = function(req,res,fields,table_name){
       prev_link,
 
       {rel:"last", href:req.protocol + '//:' + req.hostname +
-      ':' + req.app.locals.settings.port+req.baseUrl 
+      ':' + req.app.locals.settings.port+req.baseUrl
       + '?offset=' + lastpage_num
       + '&limit=' + req.query.limit},
 
       {rel:"first", href:req.protocol + '//:' + req.hostname +
-      ':' + req.app.locals.settings.port+req.baseUrl 
+      ':' + req.app.locals.settings.port+req.baseUrl
       + '?offset=' + 0
       + '&limit=' + req.query.limit}
   ]
@@ -178,28 +178,21 @@ body_parser = function(query_res, table_name) {
         property_token = property.split("_")
         var nested_obj = {};
 
-        if (property_token.indexOf("id") > -1 && 
-          (property_token.indexOf("customer") > -1) || (property_token.indexOf("manager") > -1)){
-
-          nested_obj["data"] = ("id: " + getKeyvalue(origin_obj, property))
-          exp_obj[property] = ("name: " + getExpand(origin_obj))
-          exp_obj[property] = ("rel: " + getRel(table_name, property, property_token))
-          exp_obj[property] = ("href: " + getHref(origin_obj, property))
-          exp_obj[property] = nested_obj;
-        }
-
         if (property_token.indexOf("id") > -1){
-          nested_obj["data"] = ("id: " + getKeyvalue(origin_obj, property))
-          exp_obj[property] = ("rel: " + getRel(table_name, property, property_token))
-          exp_obj[property] = ("href: " + getHref(origin_obj, property))
-          exp_obj[property] = nested_obj;
+
+          nested_obj["data"] = {"id": origin_obj[property]};
+          if (property_token[0] == "customer" || property_token[0] == "manager") {
+            nested_obj["data"]["name"] = getName(); //!!!
+          }
+          nested_obj["link"] = {"rel": getRel(table_name, property, property_token),
+                              "href": getHref(origin_obj, property)};
+          exp_obj[property_token[0]] = nested_obj;
         }
 
         if (property_token.indexOf("id") == -1){
           exp_obj[property] = origin_obj[property];
-          exp_obj[property] = nested_obj;
         }
-        
+
       }
     }
     res.push(exp_obj);
@@ -209,7 +202,7 @@ body_parser = function(query_res, table_name) {
 }
 
 getKeyvalue = function(origin_obj, property) {
-  return origin_obj[property] 
+  return origin_obj[property]
 }
 
 getRel = function(table_name, property, property_token) {
