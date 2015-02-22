@@ -201,10 +201,6 @@ body_parser = function(query_res, table_name) {
   return res;
 }
 
-getKeyvalue = function(origin_obj, property) {
-  return origin_obj[property]
-}
-
 getRel = function(table_name, property, property_token) {
   if (table_name = property)
     return 'self'
@@ -217,12 +213,25 @@ getHref = function(origin_obj, property) {
     +req.app.locals.settings.port+property+origin_obj[property];
 }
 
-getExpand = function(origin_obj, property, ) {
-  sql.query(
-      'SELECT ' + property + ' FROM ' + table_name + ' LIMIT ' + req.query.limit +
-      ' OFFSET ' + req.query.offset
-  ).then(function(query_res) {
-    query_res
+getName = function(origin_obj, property, property_token) {
+  var first_name;
+  var last_name;
+
+  if (property_token.indexOf("customer") > -1){
+    sql.query('SELECT first_name FROM customer WHERE customer_id = ' + origin_obj[property])
+    first_name = query_res;
+    sql.query('SELECT last_name FROM customer WHERE customer_id = ' + origin_obj[property])
+    last_name = query_res;
+  }
+
+  if (property_token.indexOf("manager") > -1){
+    sql.query('SELECT first_name FROM staff WHERE staff_id = ' + origin_obj[property])
+    first_name = query_res;
+    sql.query('SELECT last_name FROM staff WHERE staff_id = ' + origin_obj[property])
+    last_name = query_res;
+  }
+
+  return {"Firstname": first_name, "Lastname": last_name};
 }
 
 console.log('running!!!');
