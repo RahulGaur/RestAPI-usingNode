@@ -154,7 +154,7 @@ pagination = function(req,res,fields,table_name){
       + '&limit=' + req.query.limit}
   ]
 
-  var pagination_res = {data:body_parser(query_res, table_name), links:links};
+  var pagination_res = {data:body_parser(query_res, table_name, req), links:links};
 
   if(req.query.offset>last_num){
     res.send('out of bound');
@@ -208,9 +208,9 @@ getRel = function(table_name, property, property_token) {
     return table_name + property_token[1];
 }
 
-getHref = function(origin_obj, property) {
-  return href:req.protocol+'//:'+req.hostname+ ':'
-    +req.app.locals.settings.port+property+origin_obj[property];
+getHref = function(origin_obj, property, page_req) {
+  return page_req.protocol+'//:'+page_req.hostname+ ':'
+    +page_req.app.locals.settings.port+property+origin_obj[property];
 }
 
 getName = function(origin_obj, property, property_token) {
