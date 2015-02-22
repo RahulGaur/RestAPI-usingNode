@@ -22,6 +22,91 @@ router.get('/:id', function(req, res) {
 
 });
 
+router.get('/', function(req, res) {	
+	//var db = req.sql;	
+	sql.query('SELECT * FROM store', function(err,rows,fields) {
+	if(err) throw_err(err,res);
+	res.json({'store': rows});
+	});
+
+});
+
+router.get('/manager/:id', function(req, res) {	
+	//var db = req.sql;	
+	sql.query('SELECT * FROM store WHERE manager_staff_id=' + req.params.id, function(err,rows,fields) {
+	if(err) throw_err(err,res);
+	res.json({'store': rows});
+	});
+
+});
+
+router.get('/manager/:id1/address/:id2', function(req, res) {	
+	//var db = req.sql;	
+	sql.query('SELECT * FROM store WHERE manager_staff_id=' + req.params.id1 +' AND address_id= ' + req.params.id2, function(err,rows,fields) {
+	if(err) throw_err(err,res);
+	res.json({'store': rows});
+	});
+
+});
+
+router.get('/address/:id', function(req, res) {	
+	//var db = req.sql;	
+	sql.query('SELECT * FROM store WHERE address_id=' + req.params.id, function(err,rows,fields) {
+	if(err) throw_err(err,res);
+	res.json({'store': rows});
+	});
+});
+
+router.get('/address/:id1/manager/:id2', function(req, res) {	
+	//var db = req.sql;	
+	sql.query('SELECT * FROM store WHERE address_id=' + req.params.id1 +' AND manager_staff_id= ' + req.params.id2, function(err,rows,fields) {
+	if(err) throw_err(err,res);
+	res.json({'store': rows});
+	});
+
+});
+
+router.get('/:id1/manager/:id2', function(req, res) {	
+	//var db = req.sql;	
+	//console.log(req.params);
+	sql.query('SELECT * FROM store WHERE store_id = ' + req.params.id1 + ' AND manager_staff_id= ' + req.params.id2, function(err,rows,fields) {
+	if(err) throw_err(err,res);
+	res.json({'store': rows});
+	});
+
+});
+
+router.get('/:id1/address/:id2', function(req, res) {	
+	//var db = req.sql;	
+	//console.log(req.params);
+	sql.query('SELECT * FROM store WHERE store_id = ' + req.params.id1 + ' AND address_id= ' + req.params.id2, function(err,rows,fields) {
+	if(err) throw_err(err,res);
+	res.json({'store': rows});
+	});
+
+});
+
+router.get('/:id1/manager/:id2/address/:id3', function(req, res) {	
+	//var db = req.sql;	
+	//console.log(req.params);
+	sql.query('SELECT * FROM store WHERE store_id = ' + req.params.id1 + ' AND manager_staff_id= ' + req.params.id2 + ' AND address_id = ' + req.params.id3, function(err,rows,fields) {
+	if(err) throw_err(err,res);
+	res.json({'store': rows});
+	});
+
+});
+
+router.get('/:id1/address/:id2/manager/:id3', function(req, res) {	
+	//var db = req.sql;	
+	//console.log(req.params);
+	sql.query('SELECT * FROM store WHERE store_id = ' + req.params.id1 + ' AND address_id= ' + req.params.id2 + ' AND manager_staff_id = ' + req.params.id3, function(err,rows,fields) {
+	if(err) throw_err(err,res);
+	res.json({'store': rows});
+	});
+
+});
+
+
 //Post
 router.post('/', function(req, res) {
     query = 'INSERT INTO store (store_id,manager_staff_id,address_id,last_update) VALUES (?,?,?,?)';
@@ -46,5 +131,7 @@ router.put('/:id', function(req, res) {
 });
 
 //e.g http://localhost:3000/stores?offset=0&limit=10
+
+
 
 module.exports = router;
