@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET staff listing. */
 
-projection = function(req,res){
+var projection = function(req,res){
   pagination(req, res, req.query.fields, 'staff');
 };
 

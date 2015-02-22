@@ -93,8 +93,9 @@ sql = createMySQLWrap(connection);
 */
 
 pagination = function(req,res,fields,table_name){
-
+  console.log("in pag, table_name=" + table_name);
   var p_key = table_name + '_id';
+  console.log("in pag, fields=" + fields);
   sql.query(
     'SELECT ' + p_key + ' FROM ' + table_name + ' ORDER BY ' + p_key + ' DESC LIMIT 1'
   ).then(function(query_res) {
@@ -181,7 +182,7 @@ body_parser = function(query_res, table_name, page_req) {
 
           nested_obj["data"] = {"id": origin_obj[property]};
           if (property_token[0] == "customer" || property_token[0] == "manager") {
-            // nested_obj["data"]["name"] = getName(origin_obj, property, property_token); 
+            // nested_obj["data"]["name"] = getName(origin_obj, property, property_token);
 
           }
           nested_obj["link"] = {"rel": getRel(table_name, property_token[0])
