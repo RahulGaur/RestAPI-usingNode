@@ -154,7 +154,7 @@ pagination = function(req,res,fields,table_name){
       + '&limit=' + req.query.limit}
   ]
 
-  var pagination_res = {data:query_res, links:links};
+  var pagination_res = {data:body_parser(query_res, table_name), links:links};
 
   if(req.query.offset>last_num){
     res.send('out of bound');
@@ -164,6 +164,73 @@ pagination = function(req,res,fields,table_name){
 
   });
 };
+
+body_parser = function(query_res, table_name) {
+  var res = [];
+
+  //For loop to get relation, link, expand info.
+  for (var i = 0; i < query_res.length; i++) {
+    var exp_obj = {};
+    var origin_obj = query_res[i]
+    for (var property in origin_obj) {
+      if (origin_obj.hasOwnProperty(property)) {
+
+        property_token = property.split("_")
+        var nested_obj = {};
+
+        if (property_token.indexOf("id") > -1 && 
+          (property_token.indexOf("customer") > -1) || (property_token.indexOf("manager") > -1)){
+
+          nested_obj["data"] = ("id: " + getKeyvalue(origin_obj, property))
+          exp_obj[property] = ("name: " + getExpand(origin_obj))
+          exp_obj[property] = ("rel: " + getRel(table_name, property, property_token))
+          exp_obj[property] = ("href: " + getHref(origin_obj, property))
+          exp_obj[property] = nested_obj;
+        }
+
+        if (property_token.indexOf("id") > -1){
+          nested_obj["data"] = ("id: " + getKeyvalue(origin_obj, property))
+          exp_obj[property] = ("rel: " + getRel(table_name, property, property_token))
+          exp_obj[property] = ("href: " + getHref(origin_obj, property))
+          exp_obj[property] = nested_obj;
+        }
+
+        if (property_token.indexOf("id") == -1){
+          exp_obj[property] = origin_obj[property];
+          exp_obj[property] = nested_obj;
+        }
+        
+      }
+    }
+    res.push(exp_obj);
+  }
+  //Warp information into a JSON object
+  return res;
+}
+
+getKeyvalue = function(origin_obj, property) {
+  return origin_obj[property] 
+}
+
+getRel = function(table_name, property, property_token) {
+  if (table_name = property)
+    return 'self'
+  else
+    return table_name + property_token[1];
+}
+
+getHref = function(origin_obj, property) {
+  return href:req.protocol+'//:'+req.hostname+ ':'
+    +req.app.locals.settings.port+property+origin_obj[property];
+}
+
+getExpand = function(origin_obj, property, ) {
+  sql.query(
+      'SELECT ' + property + ' FROM ' + table_name + ' LIMIT ' + req.query.limit +
+      ' OFFSET ' + req.query.offset
+  ).then(function(query_res) {
+    query_res
+}
 
 console.log('running!!!');
 
