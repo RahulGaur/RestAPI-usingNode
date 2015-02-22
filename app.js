@@ -105,7 +105,7 @@ pagination = function(req,res,fields,table_name){
     req.query.offset = 0;
   }
   if(!req.query.limit){
-    req.query.limit = 3;
+    req.query.limit = 2;
   }
 
   sql.query(
@@ -167,7 +167,6 @@ pagination = function(req,res,fields,table_name){
 
 body_parser = function(query_res, table_name, page_req) {
   var res = [];
-
   //For loop to get relation, link, expand info.
   for (var i = 0; i < query_res.length; i++) {
     var exp_obj = {};
@@ -181,11 +180,12 @@ body_parser = function(query_res, table_name, page_req) {
         if (property_token.indexOf("id") > -1){
 
           nested_obj["data"] = {"id": origin_obj[property]};
-          // if (property_token[0] == "customer" || property_token[0] == "manager") {
-          //   nested_obj["data"]["name"] = getName(); //!!!
-          // }
+          if (property_token[0] == "customer" || property_token[0] == "manager") {
+            // nested_obj["data"]["name"] = getName(origin_obj, property, property_token); 
+
+          }
           nested_obj["link"] = {"rel": getRel(table_name, property_token[0])
-                              , "href": getHref(origin_obj, property, page_req)};
+                              , "href": getHref(origin_obj, property, page_req, property_token)};
           exp_obj[property_token[0]] = nested_obj;
         } else {
           exp_obj[property] = origin_obj[property];
@@ -206,30 +206,30 @@ getRel = function(table_name, first_token) {
     return table_name + "_" + first_token;
 }
 
-getHref = function(origin_obj, property, page_req) {
+getHref = function(origin_obj, property, page_req, property_token) {
   return page_req.protocol+'//:'+page_req.hostname+ ':'
-    +page_req.app.locals.settings.port+property+origin_obj[property];
+    +page_req.app.locals.settings.port+'/'+property_token[0]+'/'+origin_obj[property];
 }
 
 getName = function(origin_obj, property, property_token) {
-  var first_name;
-  var last_name;
+  var ret = {};
+  var table_name;
 
-  if (property_token.indexOf("customer") > -1){
-    sql.query('SELECT first_name FROM customer WHERE customer_id = ' + origin_obj[property])
-    first_name = query_res;
-    sql.query('SELECT last_name FROM customer WHERE customer_id = ' + origin_obj[property])
-    last_name = query_res;
-  }
+  if (property_token.indexOf("customer") > -1)
+    table_name = "customer";
 
-  if (property_token.indexOf("manager") > -1){
-    sql.query('SELECT first_name FROM staff WHERE staff_id = ' + origin_obj[property])
-    first_name = query_res;
-    sql.query('SELECT last_name FROM staff WHERE staff_id = ' + origin_obj[property])
-    last_name = query_res;
-  }
+  if(property_token.indexOf("manager") > -1)
+    table_name = "staff"
 
-  return {"Firstname": first_name, "Lastname": last_name};
+  sql.query(
+    "SELECT first_name, last_name FROM " + table_name + " WHERE " +
+    table_name + "_id = " + origin_obj[property]
+  ).then(function(query_res) {
+    ret.last_name = query_res[0].last_name;
+    ret.first_name = query_res[0].first_name;
+    console.log(ret)
+    return ret;
+  });
 }
 
 console.log('running!!!');
