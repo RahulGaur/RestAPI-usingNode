@@ -1,6 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
+function throw_err(err, res) {
+    res.json({ 'error': {
+        message: err.message,
+        error: err
+    }});
+    throw err;
+}
+
 /* GET rental listing. */
 
 var projection = function(req,res){
