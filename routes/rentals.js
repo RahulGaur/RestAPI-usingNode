@@ -36,8 +36,11 @@ router.get('/:id', function(req, res) {
 
 });
 
-router.get('customer/:id', function(req, res) {	
+router.get('/customer/:id', function(req, res) {	
 	var db = req.sql;	
+
+	console.log('SELECT * FROM rental WHERE customer_id=' + req.params.id)
+
 	sql.query('SELECT * FROM rental WHERE customer_id=' + req.params.id, function(err,rows,fields) {
 	if(err) throw_err(err,res);
 	res.json({'rental': rows});
@@ -45,7 +48,7 @@ router.get('customer/:id', function(req, res) {
 
 });
 
-router.get('staff/:id', function(req, res) {	
+router.get('/staff/:id', function(req, res) {	
 	var db = req.sql;	
 	sql.query('SELECT * FROM rental WHERE staff_id=' + req.params.id, function(err,rows,fields) {
 	if(err) throw_err(err,res);
@@ -54,7 +57,7 @@ router.get('staff/:id', function(req, res) {
 
 });
 
-router.get('inventory/:id', function(req, res) {	
+router.get('/inventory/:id', function(req, res) {	
 	var db = req.sql;	
 	sql.query('SELECT * FROM rental WHERE inventory_id=' + req.params.id, function(err,rows,fields) {
 	if(err) throw_err(err,res);
