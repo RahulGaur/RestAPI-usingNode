@@ -12,21 +12,17 @@ function throw_err(err, res) {
 /* GET rental listing. */
 
 var projection = function(req,res){
-	console.log("in rentals, fields=" + req.query.fields)
   pagination(req, res, req.query.fields, 'rental', '');
 };
 
 router.get('/', function(req, res){
 	console.log(req.baseUrl);
-	if(req.query.fields) {
+	if(req.query.fields)
 		return projection(req, res);
-	}
-
 	else
 		return pagination(req, res, '*', 'rental', '');
 });
-//e.g http://localhost:3000/rentals?offset=0&limit=10
-//GET
+
 router.get('/:id', function(req, res) {	
 	var get_target = ' WHERE rental_id='  + req.params.id + ' '
 	pagination(req, res, '*', 'rental', get_target)
@@ -40,284 +36,192 @@ router.get('/customer/:id', function(req, res) {
 
 router.get('/staff/:id', function(req, res) {	
 	var get_target = ' WHERE staff_id='  + req.params.id + ' '
-	console.log('i am here')
 	pagination(req, res, '*', 'rental', get_target)
 });
 
-router.get('/inventory/:id', function(req, res) {	
-	var db = req.sql;	
-	sql.query('SELECT * FROM rental WHERE inventory_id=' + req.params.id, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+router.get('/inventory/:id', function(req, res) {
+	var get_target = ' WHERE inventory_id='  + req.params.id + ' '
+	pagination(req, res, '*', 'rental', get_target)
 });
 
-router.get('/customer/:id1/staff/:id2', function(req, res) {	
-	//var db = req.sql;	
-	sql.query('SELECT * FROM rental WHERE customer_id=' + req.params.id1 +' AND staff_id= ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+router.get('/customer/:id1/staff/:id2', function(req, res) {
+	var get_target = ' WHERE customer_id='  + req.params.id1 + ' AND staff_id= ' + req.params.id2 + ' '
+	pagination(req, res, '*', 'rental', get_target)
 });
 
 router.get('/staff/:id1/customer/:id2', function(req, res) {	
-	//var db = req.sql;	
-	sql.query('SELECT * FROM rental WHERE customer_id=' + req.params.id1 +' AND staff_id= ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE customer_id='  + req.params.id2 + ' AND staff_id= ' + req.params.id1 + ' '
+	pagination(req, res, '*', 'rental', get_target)
 });
 
 router.get('/customer/:id1/inventory/:id2', function(req, res) {	
-	//var db = req.sql;	
-	sql.query('SELECT * FROM rental WHERE customer_id=' + req.params.id1 +' AND inventory_id= ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE customer_id='  + req.params.id1 + ' AND inventory_id= ' + req.params.id2 + ' '
+	pagination(req, res, '*', 'rental', get_target)
 });
 
 router.get('/inventory/:id1/customer/:id2', function(req, res) {	
-	//var db = req.sql;	
-	sql.query('SELECT * FROM rental WHERE inventory_id=' + req.params.id1 +' AND customer_id= ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE inventory_id='  + req.params.id1 + ' AND customer_id= ' + req.params.id2 + ' '
+	pagination(req, res, '*', 'rental', get_target)
 });
 
 router.get('/inventory/:id1/staff/:id2', function(req, res) {	
-	//var db = req.sql;	
-	sql.query('SELECT * FROM rental WHERE inventory_id=' + req.params.id1 +' AND staff_id= ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE inventory_id='  + req.params.id1 + ' AND staff_id= ' + req.params.id2 + ' '
+	pagination(req, res, '*', 'rental', get_target)
 });
 
 router.get('/staff/:id1/inventory/:id2', function(req, res) {	
-	//var db = req.sql;	
-	sql.query('SELECT * FROM rental WHERE staff_id=' + req.params.id1 +' AND inventory_id= ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE staff_id='  + req.params.id1 + ' AND inventory_id= ' + req.params.id2 + ' '
+	pagination(req, res, '*', 'rental', get_target)
 });
 
-router.get('/:id1/customer/:id2', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE rental_id = ' + req.params.id1 + ' AND customer_id= ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+router.get('/:id1/customer/:id2', function(req, res) {
+	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND customer_id= ' + req.params.id2 + ' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/staff/:id2', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE rental_id = ' + req.params.id1 + ' AND staff_id= ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND staff_id= ' + req.params.id2 + ' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/inventory/:id2', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE rental_id = ' + req.params.id1 + ' AND inventory_id= ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND inventory_id= ' + req.params.id2 + ' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
 
 router.get('/:id1/customer/:id2/staff/:id3', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE rental_id = ' + req.params.id1 + ' AND customer_id= ' + req.params.id2 + ' AND staff_id = ' + req.params.id3, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
+	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND customer_id= ' + req.params.id2 + ' '
+	pagination(req, res, '*', 'rental', get_target)	
 
 });
 
 router.get('/:id1/staff/:id2/customer/:id3', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE rental_id = ' + req.params.id1 + ' AND staff_id= ' + req.params.id2 + ' AND customer_id = ' + req.params.id3, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND staff_id= ' + req.params.id2 + ' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/customer/:id2/inventory/:id3', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE store_id = ' + req.params.id1 + ' AND customer_id= ' + req.params.id2 + ' AND inventory_id = ' + req.params.id3, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE rental_id='  + req.params.id1 
+		+ ' AND customer_id= ' + req.params.id2 + ' AND inventory_id = ' + req.params.id3 +' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/inventory/:id2/customer/:id3', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE store_id = ' + req.params.id1 + ' AND customer_id= ' + req.params.id3 + ' AND inventory_id = ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE rental_id='  + req.params.id1 
+		+ ' AND inventory_id= ' + req.params.id2 + ' AND customer_id = ' + req.params.id3 +' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/staff/:id2/inventory/:id3', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE rental_id = ' + req.params.id1 + ' AND staff_id= ' + req.params.id2 + ' AND inventory_id = ' + req.params.id3, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE rental_id='  + req.params.id1 
+		+ ' AND inventory_id= ' + req.params.id2 + ' AND staff_id = ' + req.params.id3 +' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/inventory/:id2/staff/:id3', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE rental_id = ' + req.params.id1 + ' AND inventory_id= ' + req.params.id2 + ' AND staff_id = ' + req.params.id3, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE rental_id='  + req.params.id1 
+		+ ' AND inventory_id= ' + req.params.id2 + ' AND customer_id = ' + req.params.id3 +' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/customer/:id2/inventory/:id3/staff/:id4', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE store_id = ' + req.params.id1 + ' AND customer_id= ' + req.params.id2 + ' AND inventory_id = ' + req.params.id3 + ' AND staff_id = ' + req.params.id4, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE rental_id='  + req.params.id1 
+		+ ' AND inventory_id= ' + req.params.id2 + ' AND staff_id = ' + req.params.id3 +' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/customer/:id2/staff/:id3/inventory/:id4', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE store_id = ' + req.params.id1 + ' AND customer_id= ' + req.params.id2 + ' AND staff_id = ' + req.params.id3 + ' AND inventory_id = ' + req.params.id4, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE rental_id='  + req.params.id1 
+		+ ' AND customer_id= ' + req.params.id2 + ' AND inventory_id = ' + req.params.id3 +' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
-router.get('/:id1/inventory/:id2/customer/:id3/staff/:id4', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE store_id = ' + req.params.id1 + ' AND inventory_id= ' + req.params.id2 + ' AND customer_id = ' + req.params.id3 + ' AND staff_id = ' + req.params.id4, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
+router.get('/:id1/inventory/:id2/customer/:id3/staff/:id4', function(req, res) {
+	var get_target = ' WHERE rental_id='  + req.params.id1 
+		+ ' AND inventory_id= ' + req.params.id2 
+		+ ' AND customer_id = ' + req.params.id3 
+		+ ' AND staff_id = ' + req.params.id4 
+		+' '
+	pagination(req, res, '*', 'rental', get_target)	
 
 });
 
 router.get('/:id1/inventory/:id2/staff/:id3/customer/:id4', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE store_id = ' + req.params.id1 + ' AND inventory_id= ' + req.params.id2 + ' AND staff_id = ' + req.params.id3 + ' AND customer_id = ' + req.params.id4, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE rental_id='  + req.params.id1 
+		+ ' AND inventory_id= ' + req.params.id2 
+		+ ' AND staff_id = ' + req.params.id3 
+		+ ' AND customer_id = ' + req.params.id4 
+		+' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/staff/:id2/customer/:id3/inventory/:id4', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE store_id = ' + req.params.id1 + ' AND staff_id= ' + req.params.id2 + ' AND customer_id = ' + req.params.id3 + ' AND inventory_id = ' + req.params.id4, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE rental_id='  + req.params.id1 
+		+ ' AND staff_id= ' + req.params.id2 
+		+ ' AND customer_id = ' + req.params.id3 
+		+ ' AND inventory_id = ' + req.params.id4 
+		+' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/staff/:id2/inventory/:id3/customer/:id4', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE store_id = ' + req.params.id1 + ' AND staff_id= ' + req.params.id2 + ' AND inventory_id = ' + req.params.id3 + ' AND customer_id = ' + req.params.id4, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE rental_id='  + req.params.id1 
+		+ ' AND staff_id= ' + req.params.id2 
+		+ ' AND inventory_id = ' + req.params.id3 
+		+ ' AND customer_id = ' + req.params.id4 
+		+' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
 
 
-router.get('/customer/:id2/inventory/:id3/staff/:id4', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE customer_id= ' + req.params.id2 + ' AND inventory_id = ' + req.params.id3 + ' AND staff_id = ' + req.params.id4, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+router.get('/customer/:id1/inventory/:id2/staff/:id3', function(req, res) {	
+	var get_target = ' WHERE customer_id='  + req.params.id1 
+		+ ' AND inventory_id= ' + req.params.id2 
+		+ ' AND staff_id = ' + req.params.id3 
+		+' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
-router.get('/customer/:id2/staff/:id3/inventory/:id4', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE customer_id= ' + req.params.id2 + ' AND staff_id = ' + req.params.id3 + ' AND inventory_id = ' + req.params.id4, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+router.get('/customer/:id1/staff/:id2/inventory/:id3', function(req, res) {	
+	var get_target = ' WHERE customer_id='  + req.params.id1 
+	+ ' AND staff_id= ' + req.params.id2 
+	+ ' AND inventory_id = ' + req.params.id3 
+	+' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
-router.get('/inventory/:id2/customer/:id3/staff/:id4', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE inventory_id= ' + req.params.id2 + ' AND customer_id = ' + req.params.id3 + ' AND staff_id = ' + req.params.id4, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+router.get('/inventory/:id1/customer/:id2/staff/:id3', function(req, res) {	
+	var get_target = ' WHERE inventory_id='  + req.params.id1 
+	+ ' AND customer_id= ' + req.params.id2 
+	+ ' AND staff_id = ' + req.params.id3 
+	+' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
-router.get('/inventory/:id2/staff/:id3/customer/:id4', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE inventory_id= ' + req.params.id2 + ' AND staff_id = ' + req.params.id3 + ' AND customer_id = ' + req.params.id4, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+router.get('/inventory/:id1/staff/:id2/customer/:id3', function(req, res) {	
+	var get_target = ' WHERE inventory_id='  + req.params.id1 
+	+ ' AND staff_id= ' + req.params.id2 
+	+ ' AND customer_id = ' + req.params.id3 
+	+' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
-router.get('/staff/:id2/customer/:id3/inventory/:id4', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE staff_id= ' + req.params.id2 + ' AND customer_id = ' + req.params.id3 + ' AND inventory_id = ' + req.params.id4, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+router.get('/staff/:id1/customer/:id2/inventory/:id3', function(req, res) {	
+	var get_target = ' WHERE staff_id='  + req.params.id1 
+	+ ' AND customer_id= ' + req.params.id2 
+	+ ' AND inventory_id = ' + req.params.id3 
+	+' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/staff/:id2/inventory/:id3/customer/:id4', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM rental WHERE staff_id= ' + req.params.id2 + ' AND inventory_id = ' + req.params.id3 + ' AND customer_id = ' + req.params.id4, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE staff_id='  + req.params.id1 
+	+ ' AND inventory_id= ' + req.params.id2 
+	+ ' AND customer_id = ' + req.params.id3 
+	+' '
+	pagination(req, res, '*', 'rental', get_target)	
 });
 
 //POST
