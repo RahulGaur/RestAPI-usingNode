@@ -99,7 +99,8 @@ pagination = function(req,res,fields,table_name,get_target){
   sql.query(
     'SELECT ' + p_key + ' FROM ' + table_name + ' ORDER BY ' + p_key + ' DESC LIMIT 1'
   ).then(function(query_res) {
-    last_num = query_res[0].p_key;
+    last_num = query_res[0][p_key];
+
   });
 
   if (!req.query.offset){
@@ -109,38 +110,40 @@ pagination = function(req,res,fields,table_name,get_target){
     req.query.limit = 2;
   }
 
-  console.log(      'SELECT ' + fields + ' FROM ' + table_name +  get_target + ' LIMIT ' 
+  console.log(      'SELECT ' + fields + ' FROM ' + table_name +  get_target + ' LIMIT '
     + req.query.limit + ' OFFSET ' + req.query.offset)
 
   sql.query(
-      'SELECT ' + fields + ' FROM ' + table_name +  get_target + ' LIMIT ' 
+      'SELECT ' + fields + ' FROM ' + table_name +  get_target + ' LIMIT '
     + req.query.limit + ' OFFSET ' + req.query.offset
   ).then(function(query_res) {
-
+  console.log("last_num" + last_num);
 
   var next_num = parseInt(req.query.offset)+parseInt(req.query.limit);
   var prev_num = parseInt(req.query.offset)-parseInt(req.query.limit);
-  var lastpage_num = parseInt(last_num)-parseInt(req.query.limit);
+  var lastpage_num = parseInt(last_num)-req.query.limit;
+  console.log("lastpage_num=" + lastpage_num);
 
   if(next_num>last_num) {
     var next_link = {rel:"next", href:''}
   } else if (get_target != null) {
-    var next_link = {rel:"next", href:req.protocol + '//:' + req.hostname +
-      ':' + req.app.locals.settings.port+req.originalUrl
+    var next_link = {rel:"next", href:req.protocol + '://' + req.hostname +
+      ':' + req.app.locals.settings.port+req.baseUrl
       + '?offset=' + next_num
       + '&limit=' + req.query.limit}
   }else {
-        var next_link = {rel:"next", href:req.protocol + '//:' + req.hostname +
+    console.log(req.baseUrl);
+        var next_link = {rel:"next", href:req.protocol + '://' + req.hostname +
       ':' + req.app.locals.settings.port+req.baseUrl
       + '?offset=' + next_num
       + '&limit=' + req.query.limit}
   }
-  
+
 
   if(prev_num<0) {
     var prev_link = {rel:"prev", href:''}
   } else {
-    var prev_link = {rel:"prev", href:req.protocol + '//:' + req.hostname +
+    var prev_link = {rel:"prev", href:req.protocol + '://' + req.hostname +
       ':' + req.app.locals.settings.port+req.baseUrl
       + '?offset=' + prev_num
       + '&limit=' + req.query.limit}
@@ -149,17 +152,17 @@ pagination = function(req,res,fields,table_name,get_target){
   var links = [
       next_link,
 
-      {rel:"self", href:req.protocol+'//:'+req.hostname+
+      {rel:"self", href:req.protocol+'://'+req.hostname+
       ':'+req.app.locals.settings.port+req.originalUrl},
 
       prev_link,
 
-      {rel:"last", href:req.protocol + '//:' + req.hostname +
+      {rel:"last", href:req.protocol + '://' + req.hostname +
       ':' + req.app.locals.settings.port+req.baseUrl
       + '?offset=' + lastpage_num
       + '&limit=' + req.query.limit},
 
-      {rel:"first", href:req.protocol + '//:' + req.hostname +
+      {rel:"first", href:req.protocol + '://' + req.hostname +
       ':' + req.app.locals.settings.port+req.baseUrl
       + '?offset=' + 0
       + '&limit=' + req.query.limit}
@@ -218,7 +221,7 @@ getRel = function(table_name, first_token) {
 }
 
 getHref = function(origin_obj, property, page_req, property_token) {
-  return page_req.protocol+'//:'+page_req.hostname+ ':'
+  return page_req.protocol+'://'+page_req.hostname+ ':'
     +page_req.app.locals.settings.port+'/'+property_token[0]+'/'+origin_obj[property];
 }
 
