@@ -30,7 +30,7 @@ router.get('/manager/:id', function(req, res) {
 
 router.get('/manager/:id1/address/:id2', function(req, res) {	
 	var get_target = ' WHERE manager_staff_id='  + req.params.id1 
-	+ ' AND address_id= ' + req.params.id2 
+	+ ' AND address_id=' + req.params.id2 
 	+ ' '
     pagination(req, res, '*', 'store', get_target)
 });
@@ -42,37 +42,37 @@ router.get('/address/:id', function(req, res) {
 
 router.get('/address/:id1/manager/:id2', function(req, res) {	
 	var get_target = ' WHERE address_id='  + req.params.id1 
-		+ ' AND manager_staff_id= ' + req.params.id2 
+		+ ' AND manager_staff_id=' + req.params.id2 
 		+ ' '
     pagination(req, res, '*', 'store', get_target)
 });
 
 router.get('/:id1/manager/:id2', function(req, res) {	
 	var get_target = ' WHERE store_id='  + req.params.id1 
-		+ ' AND manager_staff_id= ' + req.params.id2 
+		+ ' AND manager_staff_id=' + req.params.id2 
 		+ ' '
     pagination(req, res, '*', 'store', get_target)
 });
 
 router.get('/:id1/address/:id2', function(req, res) {	
 	var get_target = ' WHERE store_id='  + req.params.id1 
-		+ ' AND address_id= ' + req.params.id2 
+		+ ' AND address_id=' + req.params.id2 
 		+ ' '
     pagination(req, res, '*', 'store', get_target)
 });
 
 router.get('/:id1/manager/:id2/address/:id3', function(req, res) {	
 	var get_target = ' WHERE store_id='  + req.params.id1 
-		+ ' AND manager_staff_id= ' + req.params.id2 
-		+ ' AND address_id= ' + req.params.id3
+		+ ' AND manager_staff_id=' + req.params.id2 
+		+ ' AND address_id=' + req.params.id3
 		+ ' '
     pagination(req, res, '*', 'store', get_target)
 });
 
 router.get('/:id1/address/:id2/manager/:id3', function(req, res) {	
 	var get_target = ' WHERE store_id='  + req.params.id1 
-		+ ' AND address_id= ' + req.params.id2 
-		+ ' AND manager_staff_id= ' + req.params.id3
+		+ ' AND address_id=' + req.params.id2 
+		+ ' AND manager_staff_id=' + req.params.id3
 		+ ' '
     pagination(req, res, '*', 'store', get_target)
 });

@@ -45,103 +45,103 @@ router.get('/inventory/:id', function(req, res) {
 });
 
 router.get('/customer/:id1/staff/:id2', function(req, res) {
-	var get_target = ' WHERE customer_id='  + req.params.id1 + ' AND staff_id= ' + req.params.id2 + ' '
+	var get_target = ' WHERE customer_id='  + req.params.id1 + ' AND staff_id=' + req.params.id2 + ' '
 	pagination(req, res, '*', 'rental', get_target)
 });
 
 router.get('/staff/:id1/customer/:id2', function(req, res) {	
-	var get_target = ' WHERE customer_id='  + req.params.id2 + ' AND staff_id= ' + req.params.id1 + ' '
+	var get_target = ' WHERE customer_id='  + req.params.id2 + ' AND staff_id=' + req.params.id1 + ' '
 	pagination(req, res, '*', 'rental', get_target)
 });
 
 router.get('/customer/:id1/inventory/:id2', function(req, res) {	
-	var get_target = ' WHERE customer_id='  + req.params.id1 + ' AND inventory_id= ' + req.params.id2 + ' '
+	var get_target = ' WHERE customer_id='  + req.params.id1 + ' AND inventory_id=' + req.params.id2 + ' '
 	pagination(req, res, '*', 'rental', get_target)
 });
 
 router.get('/inventory/:id1/customer/:id2', function(req, res) {	
-	var get_target = ' WHERE inventory_id='  + req.params.id1 + ' AND customer_id= ' + req.params.id2 + ' '
+	var get_target = ' WHERE inventory_id='  + req.params.id1 + ' AND customer_id=' + req.params.id2 + ' '
 	pagination(req, res, '*', 'rental', get_target)
 });
 
 router.get('/inventory/:id1/staff/:id2', function(req, res) {	
-	var get_target = ' WHERE inventory_id='  + req.params.id1 + ' AND staff_id= ' + req.params.id2 + ' '
+	var get_target = ' WHERE inventory_id='  + req.params.id1 + ' AND staff_id=' + req.params.id2 + ' '
 	pagination(req, res, '*', 'rental', get_target)
 });
 
 router.get('/staff/:id1/inventory/:id2', function(req, res) {	
-	var get_target = ' WHERE staff_id='  + req.params.id1 + ' AND inventory_id= ' + req.params.id2 + ' '
+	var get_target = ' WHERE staff_id='  + req.params.id1 + ' AND inventory_id=' + req.params.id2 + ' '
 	pagination(req, res, '*', 'rental', get_target)
 });
 
 router.get('/:id1/customer/:id2', function(req, res) {
-	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND customer_id= ' + req.params.id2 + ' '
+	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND customer_id=' + req.params.id2 + ' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/staff/:id2', function(req, res) {	
-	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND staff_id= ' + req.params.id2 + ' '
+	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND staff_id=' + req.params.id2 + ' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/inventory/:id2', function(req, res) {	
-	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND inventory_id= ' + req.params.id2 + ' '
+	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND inventory_id=' + req.params.id2 + ' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 
 router.get('/:id1/customer/:id2/staff/:id3', function(req, res) {	
-	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND customer_id= ' + req.params.id2 + ' '
+	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND customer_id=' + req.params.id2 + ' '
 	pagination(req, res, '*', 'rental', get_target)	
 
 });
 
 router.get('/:id1/staff/:id2/customer/:id3', function(req, res) {	
-	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND staff_id= ' + req.params.id2 + ' '
+	var get_target = ' WHERE rental_id='  + req.params.id1 + ' AND staff_id=' + req.params.id2 + ' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/customer/:id2/inventory/:id3', function(req, res) {	
 	var get_target = ' WHERE rental_id='  + req.params.id1 
-		+ ' AND customer_id= ' + req.params.id2 + ' AND inventory_id = ' + req.params.id3 +' '
+		+ ' AND customer_id=' + req.params.id2 + ' AND inventory_id=' + req.params.id3 +' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/inventory/:id2/customer/:id3', function(req, res) {	
 	var get_target = ' WHERE rental_id='  + req.params.id1 
-		+ ' AND inventory_id= ' + req.params.id2 + ' AND customer_id = ' + req.params.id3 +' '
+		+ ' AND inventory_id=' + req.params.id2 + ' AND customer_id=' + req.params.id3 +' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/staff/:id2/inventory/:id3', function(req, res) {	
 	var get_target = ' WHERE rental_id='  + req.params.id1 
-		+ ' AND inventory_id= ' + req.params.id2 + ' AND staff_id = ' + req.params.id3 +' '
+		+ ' AND inventory_id=' + req.params.id2 + ' AND staff_id=' + req.params.id3 +' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/inventory/:id2/staff/:id3', function(req, res) {	
 	var get_target = ' WHERE rental_id='  + req.params.id1 
-		+ ' AND inventory_id= ' + req.params.id2 + ' AND customer_id = ' + req.params.id3 +' '
+		+ ' AND inventory_id=' + req.params.id2 + ' AND customer_id=' + req.params.id3 +' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/customer/:id2/inventory/:id3/staff/:id4', function(req, res) {	
 	var get_target = ' WHERE rental_id='  + req.params.id1 
-		+ ' AND inventory_id= ' + req.params.id2 + ' AND staff_id = ' + req.params.id3 +' '
+		+ ' AND inventory_id=' + req.params.id2 + ' AND staff_id=' + req.params.id3 +' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/customer/:id2/staff/:id3/inventory/:id4', function(req, res) {	
 	var get_target = ' WHERE rental_id='  + req.params.id1 
-		+ ' AND customer_id= ' + req.params.id2 + ' AND inventory_id = ' + req.params.id3 +' '
+		+ ' AND customer_id=' + req.params.id2 + ' AND inventory_id=' + req.params.id3 +' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/inventory/:id2/customer/:id3/staff/:id4', function(req, res) {
 	var get_target = ' WHERE rental_id='  + req.params.id1 
-		+ ' AND inventory_id= ' + req.params.id2 
-		+ ' AND customer_id = ' + req.params.id3 
-		+ ' AND staff_id = ' + req.params.id4 
+		+ ' AND inventory_id=' + req.params.id2 
+		+ ' AND customer_id=' + req.params.id3 
+		+ ' AND staff_id=' + req.params.id4 
 		+' '
 	pagination(req, res, '*', 'rental', get_target)	
 
@@ -149,27 +149,27 @@ router.get('/:id1/inventory/:id2/customer/:id3/staff/:id4', function(req, res) {
 
 router.get('/:id1/inventory/:id2/staff/:id3/customer/:id4', function(req, res) {	
 	var get_target = ' WHERE rental_id='  + req.params.id1 
-		+ ' AND inventory_id= ' + req.params.id2 
-		+ ' AND staff_id = ' + req.params.id3 
-		+ ' AND customer_id = ' + req.params.id4 
+		+ ' AND inventory_id=' + req.params.id2 
+		+ ' AND staff_id=' + req.params.id3 
+		+ ' AND customer_id=' + req.params.id4 
 		+' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/staff/:id2/customer/:id3/inventory/:id4', function(req, res) {	
 	var get_target = ' WHERE rental_id='  + req.params.id1 
-		+ ' AND staff_id= ' + req.params.id2 
-		+ ' AND customer_id = ' + req.params.id3 
-		+ ' AND inventory_id = ' + req.params.id4 
+		+ ' AND staff_id=' + req.params.id2 
+		+ ' AND customer_id=' + req.params.id3 
+		+ ' AND inventory_id=' + req.params.id4 
 		+' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/:id1/staff/:id2/inventory/:id3/customer/:id4', function(req, res) {	
 	var get_target = ' WHERE rental_id='  + req.params.id1 
-		+ ' AND staff_id= ' + req.params.id2 
-		+ ' AND inventory_id = ' + req.params.id3 
-		+ ' AND customer_id = ' + req.params.id4 
+		+ ' AND staff_id=' + req.params.id2 
+		+ ' AND inventory_id=' + req.params.id3 
+		+ ' AND customer_id=' + req.params.id4 
 		+' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
@@ -178,48 +178,48 @@ router.get('/:id1/staff/:id2/inventory/:id3/customer/:id4', function(req, res) {
 
 router.get('/customer/:id1/inventory/:id2/staff/:id3', function(req, res) {	
 	var get_target = ' WHERE customer_id='  + req.params.id1 
-		+ ' AND inventory_id= ' + req.params.id2 
-		+ ' AND staff_id = ' + req.params.id3 
+		+ ' AND inventory_id=' + req.params.id2 
+		+ ' AND staff_id=' + req.params.id3 
 		+' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/customer/:id1/staff/:id2/inventory/:id3', function(req, res) {	
 	var get_target = ' WHERE customer_id='  + req.params.id1 
-	+ ' AND staff_id= ' + req.params.id2 
-	+ ' AND inventory_id = ' + req.params.id3 
+	+ ' AND staff_id=' + req.params.id2 
+	+ ' AND inventory_id=' + req.params.id3 
 	+' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/inventory/:id1/customer/:id2/staff/:id3', function(req, res) {	
 	var get_target = ' WHERE inventory_id='  + req.params.id1 
-	+ ' AND customer_id= ' + req.params.id2 
-	+ ' AND staff_id = ' + req.params.id3 
+	+ ' AND customer_id=' + req.params.id2 
+	+ ' AND staff_id=' + req.params.id3 
 	+' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/inventory/:id1/staff/:id2/customer/:id3', function(req, res) {	
 	var get_target = ' WHERE inventory_id='  + req.params.id1 
-	+ ' AND staff_id= ' + req.params.id2 
-	+ ' AND customer_id = ' + req.params.id3 
+	+ ' AND staff_id=' + req.params.id2 
+	+ ' AND customer_id=' + req.params.id3 
 	+' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/staff/:id1/customer/:id2/inventory/:id3', function(req, res) {	
 	var get_target = ' WHERE staff_id='  + req.params.id1 
-	+ ' AND customer_id= ' + req.params.id2 
-	+ ' AND inventory_id = ' + req.params.id3 
+	+ ' AND customer_id=' + req.params.id2 
+	+ ' AND inventory_id=' + req.params.id3 
 	+' '
 	pagination(req, res, '*', 'rental', get_target)	
 });
 
 router.get('/staff/:id2/inventory/:id3/customer/:id4', function(req, res) {	
 	var get_target = ' WHERE staff_id='  + req.params.id1 
-	+ ' AND inventory_id= ' + req.params.id2 
-	+ ' AND customer_id = ' + req.params.id3 
+	+ ' AND inventory_id=' + req.params.id2 
+	+ ' AND customer_id=' + req.params.id3 
 	+' '
 	pagination(req, res, '*', 'rental', get_target)	
 });

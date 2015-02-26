@@ -93,15 +93,29 @@ sql = createMySQLWrap(connection);
 */
 
 pagination = function(req,res,fields,table_name,get_target){
-  console.log("in pag, table_name=" + table_name);
   var p_key = table_name + '_id';
-  console.log("in pag, fields=" + fields);
-  sql.query(
-    'SELECT ' + p_key + ' FROM ' + table_name + ' ORDER BY ' + p_key + ' DESC LIMIT 1'
-  ).then(function(query_res) {
-    last_num = query_res[0][p_key];
 
-  });
+  console.log("in pag, table_name=" + table_name);
+  console.log("in pag, fields=" + fields);
+
+  if(get_target.indexOf("WHERE") == -1){
+    sql.query(
+      'SELECT COUNT(' + p_key + ') FROM ' + table_name
+    ).then(function(query_res) {
+      last_num = query_res[0]['COUNT('+p_key+')'];
+
+    });
+  }
+
+  if(get_target.indexOf("WHERE") > -1){
+    var get_target_token = get_target.split("WHERE")
+    sql.query(
+      'SELECT COUNT(' + p_key + ') FROM ' + table_name + ' WHERE ' + get_target_token[1]
+    ).then(function(query_res) {
+      console.log('SELECT COUNT(' + p_key + ') FROM ' + table_name + ' WHERE ' + get_target_token[1])
+      last_num = query_res[0]['COUNT('+p_key+')'];
+    });
+  }
 
   if (!req.query.offset){
     req.query.offset = 0;
@@ -110,14 +124,14 @@ pagination = function(req,res,fields,table_name,get_target){
     req.query.limit = 2;
   }
 
-  console.log(      'SELECT ' + fields + ' FROM ' + table_name +  get_target + ' LIMIT '
+  console.log('SELECT ' + fields + ' FROM ' + table_name +  get_target + ' LIMIT '
     + req.query.limit + ' OFFSET ' + req.query.offset)
 
   sql.query(
       'SELECT ' + fields + ' FROM ' + table_name +  get_target + ' LIMIT '
     + req.query.limit + ' OFFSET ' + req.query.offset
   ).then(function(query_res) {
-  console.log("last_num" + last_num);
+  console.log("last_num=" + last_num);
 
   var next_num = parseInt(req.query.offset)+parseInt(req.query.limit);
   var prev_num = parseInt(req.query.offset)-parseInt(req.query.limit);
