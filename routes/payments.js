@@ -11,7 +11,7 @@ function throw_err(err, res) {
 
 /* GET payment listing. */
 
-projection = function(req,res){
+var projection = function(req,res){
   pagination(req, res, req.query.fields, 'payment');
 };
 

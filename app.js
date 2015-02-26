@@ -92,7 +92,7 @@ sql = createMySQLWrap(connection);
 * Pagination
 */
 
-pagination = function(req,res,fields,table_name){
+pagination = function(req,res,fields,table_name,get_target){
   console.log("in pag, table_name=" + table_name);
   var p_key = table_name + '_id';
   console.log("in pag, fields=" + fields);
@@ -109,10 +109,14 @@ pagination = function(req,res,fields,table_name){
     req.query.limit = 2;
   }
 
+  console.log(      'SELECT ' + fields + ' FROM ' + table_name +  get_target + ' LIMIT ' 
+    + req.query.limit + ' OFFSET ' + req.query.offset)
+
   sql.query(
-      'SELECT ' + fields + ' FROM ' + table_name + ' LIMIT ' + req.query.limit +
-      ' OFFSET ' + req.query.offset
+      'SELECT ' + fields + ' FROM ' + table_name +  get_target + ' LIMIT ' 
+    + req.query.limit + ' OFFSET ' + req.query.offset
   ).then(function(query_res) {
+
 
   var next_num = parseInt(req.query.offset)+parseInt(req.query.limit);
   var prev_num = parseInt(req.query.offset)-parseInt(req.query.limit);
@@ -120,12 +124,18 @@ pagination = function(req,res,fields,table_name){
 
   if(next_num>last_num) {
     var next_link = {rel:"next", href:''}
-  } else {
+  } else if (get_target != null) {
     var next_link = {rel:"next", href:req.protocol + '//:' + req.hostname +
+      ':' + req.app.locals.settings.port+req.originalUrl
+      + '?offset=' + next_num
+      + '&limit=' + req.query.limit}
+  }else {
+        var next_link = {rel:"next", href:req.protocol + '//:' + req.hostname +
       ':' + req.app.locals.settings.port+req.baseUrl
       + '?offset=' + next_num
       + '&limit=' + req.query.limit}
   }
+  
 
   if(prev_num<0) {
     var prev_link = {rel:"prev", href:''}

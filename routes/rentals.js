@@ -13,7 +13,7 @@ function throw_err(err, res) {
 
 var projection = function(req,res){
 	console.log("in rentals, fields=" + req.query.fields)
-  pagination(req, res, req.query.fields, 'rental');
+  pagination(req, res, req.query.fields, 'rental', '');
 };
 
 router.get('/', function(req, res){
@@ -23,38 +23,25 @@ router.get('/', function(req, res){
 	}
 
 	else
-		return pagination(req, res, '*', 'rental');
+		return pagination(req, res, '*', 'rental', '');
 });
 //e.g http://localhost:3000/rentals?offset=0&limit=10
 //GET
 router.get('/:id', function(req, res) {	
-	var db = req.sql;	
-	sql.query('SELECT * FROM rental WHERE rental_id=' + req.params.id, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
+	var get_target = ' WHERE rental_id='  + req.params.id + ' '
+	pagination(req, res, '*', 'rental', get_target)
 
 });
 
 router.get('/customer/:id', function(req, res) {	
-	var db = req.sql;	
-
-	console.log('SELECT * FROM rental WHERE customer_id=' + req.params.id)
-
-	sql.query('SELECT * FROM rental WHERE customer_id=' + req.params.id, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE customer_id='  + req.params.id + ' '
+	pagination(req, res, '*', 'rental', get_target)
 });
 
 router.get('/staff/:id', function(req, res) {	
-	var db = req.sql;	
-	sql.query('SELECT * FROM rental WHERE staff_id=' + req.params.id, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'rental': rows});
-	});
-
+	var get_target = ' WHERE staff_id='  + req.params.id + ' '
+	console.log('i am here')
+	pagination(req, res, '*', 'rental', get_target)
 });
 
 router.get('/inventory/:id', function(req, res) {	
