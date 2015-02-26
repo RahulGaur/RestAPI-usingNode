@@ -110,9 +110,9 @@ pagination = function(req,res,fields,table_name,get_target){
   if(get_target.indexOf("WHERE") > -1){
     var get_target_token = get_target.split("WHERE")
     sql.query(
-      'SELECT COUNT(' + p_key + ') FROM ' + table_name + ' WHERE ' + get_target_token[1]
+      'SELECT COUNT(' + p_key + ') FROM ' + table_name + ' WHERE' + get_target_token[1]
     ).then(function(query_res) {
-      console.log('SELECT COUNT(' + p_key + ') FROM ' + table_name + ' WHERE ' + get_target_token[1])
+      console.log('SELECT COUNT(' + p_key + ') FROM ' + table_name + ' WHERE' + get_target_token[1])
       last_num = query_res[0]['COUNT('+p_key+')'];
     });
   }
@@ -136,13 +136,20 @@ pagination = function(req,res,fields,table_name,get_target){
   var next_num = parseInt(req.query.offset)+parseInt(req.query.limit);
   var prev_num = parseInt(req.query.offset)-parseInt(req.query.limit);
   var lastpage_num = parseInt(last_num)-req.query.limit;
+
+  if (lastpage_num < 0){
+    lastpage_num = 0;
+  }
+
   console.log("lastpage_num=" + lastpage_num);
+  console.log("next_num=" +next_num);
+  var originalUrl_token = req.originalUrl.split("?")
 
   if(next_num>last_num) {
     var next_link = {rel:"next", href:''}
-  } else if (get_target != null) {
+  } else if (get_target.indexOf("WHERE") > -1) {
     var next_link = {rel:"next", href:req.protocol + '://' + req.hostname +
-      ':' + req.app.locals.settings.port+req.baseUrl
+      ':' + req.app.locals.settings.port+originalUrl_token[0]
       + '?offset=' + next_num
       + '&limit=' + req.query.limit}
   }else {
@@ -156,10 +163,42 @@ pagination = function(req,res,fields,table_name,get_target){
 
   if(prev_num<0) {
     var prev_link = {rel:"prev", href:''}
-  } else {
+  } else if (get_target.indexOf("WHERE") > -1) {
+    var prev_link = {rel:"prev", href:req.protocol + '://' + req.hostname +
+      ':' + req.app.locals.settings.port+originalUrl_token[0]
+      + '?offset=' + prev_num
+      + '&limit=' + req.query.limit}
+  }
+  else {
     var prev_link = {rel:"prev", href:req.protocol + '://' + req.hostname +
       ':' + req.app.locals.settings.port+req.baseUrl
       + '?offset=' + prev_num
+      + '&limit=' + req.query.limit}
+  }
+
+  if (get_target.indexOf("WHERE") > -1) {
+    var last_link = {rel:"last", href:req.protocol + '://' + req.hostname +
+      ':' + req.app.locals.settings.port+originalUrl_token[0]
+      + '?offset=' + lastpage_num
+      + '&limit=' + req.query.limit}
+  }
+  else{
+    var last_link = {rel:"last", href:req.protocol + '://' + req.hostname +
+      ':' + req.app.locals.settings.port+req.baseUrl
+      + '?offset=' + lastpage_num
+      + '&limit=' + req.query.limit}
+  }
+
+  if (get_target.indexOf("WHERE") > -1) {
+    var first_link = {rel:"first", href:req.protocol + '://' + req.hostname +
+      ':' + req.app.locals.settings.port+originalUrl_token[0]
+      + '?offset=' + 0
+      + '&limit=' + req.query.limit}
+  }
+  else{
+    var last_link = {rel:"first", href:req.protocol + '://' + req.hostname +
+      ':' + req.app.locals.settings.port+req.baseUrl
+      + '?offset=' + 0
       + '&limit=' + req.query.limit}
   }
 
@@ -171,10 +210,7 @@ pagination = function(req,res,fields,table_name,get_target){
 
       prev_link,
 
-      {rel:"last", href:req.protocol + '://' + req.hostname +
-      ':' + req.app.locals.settings.port+req.baseUrl
-      + '?offset=' + lastpage_num
-      + '&limit=' + req.query.limit},
+      last_link,
 
       {rel:"first", href:req.protocol + '://' + req.hostname +
       ':' + req.app.locals.settings.port+req.baseUrl
