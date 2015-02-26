@@ -21,34 +21,20 @@ router.get('/', function(req, res){
 	else
 		return pagination(req, res, '*', 'staff');
 });
-//e.g http://localhost:3000/staff?offset=0&limit=10
 
-// GET
 router.get('/:id', function(req, res) {	
-		
-	sql.query('SELECT * FROM staff WHERE staff_id=' + req.params.id, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'staff': rows});
-	});
-
+    var get_target = ' WHERE staff_id='  + req.params.id + ' '
+    pagination(req, res, '*', 'staff', get_target)
 });
 
 router.get('address/:id', function(req, res) {	
-		
-	sql.query('SELECT * FROM staff WHERE address_id=' + req.params.id, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'staff': rows});
-	});
-
+    var get_target = ' WHERE address_id='  + req.params.id + ' '
+    pagination(req, res, '*', 'staff', get_target)
 });
 
-router.get('store/:id', function(req, res) {	
-		
-	sql.query('SELECT * FROM staff WHERE store_id=' + req.params.id, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'staff': rows});
-	});
-
+router.get('store/:id', function(req, res) {
+    var get_target = ' WHERE store_id='  + req.params.id + ' '
+    pagination(req, res, '*', 'staff', get_target)
 });
 
 

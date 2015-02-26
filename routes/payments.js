@@ -24,168 +24,122 @@ router.get('/', function(req, res){
 
 
 router.get('/:id', function(req, res) {
-	var db = req.sql;
-	sql.query('SELECT * FROM payment WHERE payment_id=' + req.params.id, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE payment_id='  + req.params.id + ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
-//e.g http://localhost:3000/payments?offset=0&limit=10
 
 router.get('customer/:id', function(req, res) {	
-	var db = req.sql;	
-	sql.query('SELECT * FROM payment WHERE customer_id=' + req.params.id, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE customer_id='  + req.params.id + ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 router.get('staff/:id', function(req, res) {	
-	var db = req.sql;	
-	sql.query('SELECT * FROM payment WHERE staff_id=' + req.params.id, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE staff_id='  + req.params.id + ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 router.get('rental/:id', function(req, res) {	
-	var db = req.sql;	
-	sql.query('SELECT * FROM payment WHERE rental_id=' + req.params.id, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE rental_id='  + req.params.id + ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
-router.get('/customer/:id1/staff/:id2', function(req, res) {	
-	//var db = req.sql;	
-	sql.query('SELECT * FROM payment WHERE customer_id=' + req.params.id1 +' AND staff_id= ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+router.get('/customer/:id1/staff/:id2', function(req, res) {
+	var get_target = ' WHERE customer_id='  + req.params.id1 
+		+ ' AND staff_id= ' + req.params.id2 
+		+ ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 router.get('/staff/:id1/customer/:id2', function(req, res) {	
-	//var db = req.sql;	
-	sql.query('SELECT * FROM payment WHERE customer_id=' + req.params.id2 +' AND staff_id= ' + req.params.id1, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE staff_id='  + req.params.id1 
+		+ ' AND customer_id= ' + req.params.id2 
+		+ ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 router.get('/customer/:id1/rental/:id2', function(req, res) {	
-	//var db = req.sql;	
-	sql.query('SELECT * FROM payment WHERE customer_id=' + req.params.id1 +' AND rental_id= ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE customer_id='  + req.params.id1 
+		+ ' AND rental_id= ' + req.params.id2 
+		+ ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 router.get('/rental/:id1/customer/:id2', function(req, res) {	
-	//var db = req.sql;	
-	sql.query('SELECT * FROM payment WHERE rental_id=' + req.params.id2 +' AND customer_id= ' + req.params.id1, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE rental_id='  + req.params.id1 
+		+ ' AND customer_id= ' + req.params.id2 
+		+ ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 
 router.get('/:id1/customer/:id2', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM payment WHERE payment_id = ' + req.params.id1 + ' AND customer_id= ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE payment_id='  + req.params.id1 
+		+ ' AND customer_id= ' + req.params.id2 
+		+ ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 router.get('/:id1/staff/:id2', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM payment WHERE payment_id = ' + req.params.id1 + ' AND staff_id= ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE payment_id='  + req.params.id1 
+		+ ' AND staff_id= ' + req.params.id2 
+		+ ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 router.get('/:id1/rental/:id2', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM payment WHERE payment_id = ' + req.params.id1 + ' AND rental_id= ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE payment_id='  + req.params.id1 
+		+ ' AND rental_id= ' + req.params.id2 
+		+ ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 
 router.get('/:id1/customer/:id2/staff/:id3', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM payment WHERE payment_id = ' + req.params.id1 + ' AND customer_id= ' + req.params.id2 + ' AND staff_id = ' + req.params.id3, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE payment_id='  + req.params.id1 
+		+ ' AND customer_id= ' + req.params.id2 
+		+ ' AND staff_id= ' + req.params.id3
+		+ ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 router.get('/:id1/staff/:id2/customer/:id3', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM payment WHERE payment_id = ' + req.params.id1 + ' AND staff_id= ' + req.params.id2 + ' AND customer_id = ' + req.params.id3, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE payment_id='  + req.params.id1 
+		+ ' AND staff_id= ' + req.params.id2 
+		+ ' AND customer_id= ' + req.params.id3
+		+ ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 router.get('/:id1/customer/:id2/rental/:id3', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM payment WHERE store_id = ' + req.params.id1 + ' AND customer_id= ' + req.params.id2 + ' AND rental_id = ' + req.params.id3, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE payment_id='  + req.params.id1 
+		+ ' AND customer_id= ' + req.params.id2 
+		+ ' AND rental_id= ' + req.params.id3
+		+ ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 router.get('/:id1/rental/:id2/customer/:id3', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM payment WHERE store_id = ' + req.params.id1 + ' AND customer_id= ' + req.params.id3 + ' AND rental_id = ' + req.params.id2, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE payment_id='  + req.params.id1 
+		+ ' AND rental_id= ' + req.params.id2 
+		+ ' AND customer_id= ' + req.params.id3
+		+ ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 router.get('/:id1/staff/:id2/rental/:id3', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM payment WHERE payment_id = ' + req.params.id1 + ' AND staff_id= ' + req.params.id2 + ' AND rental_id = ' + req.params.id3, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE payment_id='  + req.params.id1 
+		+ ' AND staff_id= ' + req.params.id2 
+		+ ' AND rental_id= ' + req.params.id3
+		+ ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 router.get('/:id1/rental/:id2/staff/:id3', function(req, res) {	
-	//var db = req.sql;	
-	//console.log(req.params);
-	sql.query('SELECT * FROM payment WHERE payment_id = ' + req.params.id1 + ' AND rental_id= ' + req.params.id2 + ' AND staff_id = ' + req.params.id3, function(err,rows,fields) {
-	if(err) throw_err(err,res);
-	res.json({'payment': rows});
-	});
-
+	var get_target = ' WHERE payment_id='  + req.params.id1 
+		+ ' AND rental_id= ' + req.params.id2 
+		+ ' AND staff_id= ' + req.params.id3
+		+ ' '
+    pagination(req, res, '*', 'payment', get_target)
 });
 
 //POST
