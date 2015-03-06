@@ -69,7 +69,7 @@ var mysql      = require('mysql');
 var connection = mysql.createConnection({
   host     : '127.0.0.1',
   user     : 'root',
-  password : 'Garima@123',
+  password : '',
   database:  'sakila'
 
 });
@@ -171,9 +171,7 @@ pagination = function(req,res,fields,table_name,get_target){
   }
 
 
-  if(prev_num<0) {
-    var prev_link = {rel:"prev", href:''}
-  } else if (get_target.indexOf("WHERE") > -1) {
+  if (get_target.indexOf("WHERE") > -1) {
     var prev_link = {rel:"prev", href:req.protocol + '://' + req.hostname +
       ':' + req.app.locals.settings.port+originalUrl_token[0]
       + '?offset=' + prev_num
@@ -212,6 +210,22 @@ pagination = function(req,res,fields,table_name,get_target){
       + '&limit=' + req.query.limit}
   }
 
+if (prev_num<0){
+    var links = [
+      next_link,
+
+      {rel:"self", href:req.protocol+'://'+req.hostname+
+      ':'+req.app.locals.settings.port+req.originalUrl},
+
+      last_link,
+
+      {rel:"first", href:req.protocol + '://' + req.hostname +
+      ':' + req.app.locals.settings.port+req.baseUrl
+      + '?offset=' + 0
+      + '&limit=' + req.query.limit}
+  ]
+}else{
+
   var links = [
       next_link,
 
@@ -227,9 +241,15 @@ pagination = function(req,res,fields,table_name,get_target){
       + '?offset=' + 0
       + '&limit=' + req.query.limit}
   ]
-
-  var pagination_res = {data:body_parser(query_res, table_name, req), links:links};
-
+}
+ 
+  if (last_num > 2){
+    console.log("length > 2");
+    var pagination_res = {data:body_parser(query_res, table_name, req), links:links};
+  }else{
+    var pagination_res = {data:body_parser(query_res, table_name, req)};
+  }
+  
   if(req.query.offset>last_num){
     res.send('out of bound');
   }else{

@@ -12,16 +12,15 @@ function throw_err(err, res) {
 /* GET payment listing. */
 
 var projection = function(req,res){
-  pagination(req, res, req.query.fields, 'payment');
+  pagination(req, res, req.query.fields, 'payment', '');
 };
 
 router.get('/', function(req, res){
 	if(req.query.fields)
 		return projection(req, res);
 	else
-		return pagination(req, res, '*', 'payment');
+		return pagination(req, res, '*', 'payment', '');
 });
-
 
 router.get('/:id', function(req, res) {
 	var get_target = ' WHERE payment_id='  + req.params.id + ' '
