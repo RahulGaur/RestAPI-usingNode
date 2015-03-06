@@ -103,6 +103,12 @@ router.put('/:id', function(req, res) {
 
 //e.g http://localhost:3000/stores?offset=0&limit=10
 
-
+//DELETE --400 error due to foriegn key
+router.delete('/:id', function(req, res) {
+    sql.query('DELETE FROM store WHERE store_id = ' + req.params.id,function(err,rows,fields){
+    if(err) throw_err1(err,res);
+    res.json({'success': 1});
+});
+});
 
 module.exports = router;

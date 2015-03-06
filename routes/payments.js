@@ -146,7 +146,7 @@ router.get('/:id1/rental/:id2/staff/:id3', function(req, res) {
 
 router.post('/', function(req, res) {
     query = 'INSERT INTO payment (payment_id,customer_id,staff_id,rental_id,amount,payment_date,last_update) VALUES (?,?,?,?,?,?,?)';
-    params = [req.body.payment_id, req.body.customer_id,req.body.staff_id,req.body.rental_id,req.body.amount,req.body.payment_date,req.body.last_update]
+    params = [req.body.payment_id,req.body.customer_id,req.body.staff_id,req.body.rental_id,req.body.amount,req.body.payment_date,req.body.last_update]
     sql.query(query, params, function(err, rows, fields) {
         if (err) throw_err(err, res);
         res.json({ 'success': 1 });
@@ -163,6 +163,16 @@ router.put('/:id', function(req, res) {
         res.json({ 'success': 1 });
     });
 });
+
+
+//DELETE
+router.delete('/:id', function(req, res) {
+    sql.query('DELETE FROM payment WHERE payment_id = ' + req.params.id,function(err,rows,fields){
+    if(err) throw_err1(err,res);
+    res.json({'success': 1});
+});
+});
+
 
 
 module.exports = router;

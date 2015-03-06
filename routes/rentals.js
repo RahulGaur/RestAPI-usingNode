@@ -246,5 +246,14 @@ router.put('/:id', function(req, res) {
     });
 });
 
+//DELETE
+router.delete('/:id', function(req, res) {
+    sql.query('DELETE FROM rental WHERE rental_id = ' + req.params.id,function(err,rows,fields){
+    if(err) throw_err1(err,res);
+    res.json({'success': 1});
+});
+});
+
+
 
 module.exports = router;

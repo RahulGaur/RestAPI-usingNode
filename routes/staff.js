@@ -9,6 +9,9 @@ function throw_err(err, res) {
     throw err;
 }
 
+
+
+
 /* GET staff listing. */
 
 var projection = function(req,res){
@@ -16,10 +19,8 @@ var projection = function(req,res){
 };
 
 router.get('/', function(req, res){
-	if(req.query.fields)
-		return projection(req, res);
-	else
-		return pagination(req, res, '*', 'staff');
+        var get_target = ' '
+        pagination(req, res, '*', 'staff', get_target)
 });
 
 router.get('/:id', function(req, res) {	
@@ -67,5 +68,23 @@ router.put('/:id', function(req, res) {
         res.json({ 'success': 1 });
     });
 });
+
+/*router.delete('/:id', function(req, res) {
+    query = 'DELETE staff WHERE staff_id = '+ req.params.id;
+    params = [req.params.id]
+    sql.query(query, params, function(err, rows, fields) {
+        if (err) throw_err(err, res);
+        res.json({ 'success': 1 });
+    });
+});
+*/
+
+router.delete('/:id', function(req, res) {
+    sql.query('DELETE FROM staff WHERE staff_id = ' + req.params.id,function(err,rows,fields){
+    if(err) throw_err1(err,res);
+    res.json({'success': 1});
+});
+});
+
 
 module.exports = router;
